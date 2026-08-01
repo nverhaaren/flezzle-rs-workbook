@@ -16,8 +16,8 @@ below are the canonical task store, and the diagram is generated from them.
 <!-- task-dag:graph -->
 ```mermaid
 graph LR
-  W1["W1 Define workbook conventions: project directory …"]:::pending
-  W2["W2 Project 1 — Sample platformer: set up the `bevy…"]:::pending
+  W1["W1 Define workbook conventions: project directory …"]:::inprogress
+  W2["W2 Project 1 — Sample platformer: set up the `bevy…"]:::inprogress
   W3["W3 Project 2 — Determinism + portability: minimal …"]:::pending
   W4["W4 Project 3 — Replay: save/replay input traces, p…"]:::pending
   W5["W5 Project 4 — LDtk levels: support user-authored …"]:::pending
@@ -38,13 +38,13 @@ graph LR
 
 | ID | Task | Depends on | Status |
 |----|------|-----------|--------|
-| W1 | Define workbook conventions: project directory layout, submodule pinning workflow, exercise/goal format, how solutions are checked | — | `[ ]` |
+| W1 | Define workbook conventions: project directory layout, submodule pinning workflow, exercise/goal format, how solutions are checked | — | `[~]` |
 
 ## Projects
 
 | ID | Task | Depends on | Status |
 |----|------|-----------|--------|
-| W2 | Project 1 — Sample platformer: set up the `bevy_ecs_ldtk` platformer example and make sure it runs (flezzle-rs F1) | W1 | `[ ]` |
+| W2 | Project 1 — Sample platformer: set up the `bevy_ecs_ldtk` platformer example and make sure it runs (flezzle-rs F1) | W1 | `[~]` |
 | W3 | Project 2 — Determinism + portability: minimal adaptations for discrete time steps and a bare-bones browser-playable WASM build (flezzle-rs F2–F4) | W2 | `[ ]` |
 | W4 | Project 3 — Replay: save/replay input traces, plus a simple mostly-random trace generator as the start of fuzzing (flezzle-rs F5–F6) | W3 | `[ ]` |
 | W5 | Project 4 — LDtk levels: support user-authored LDtk levels starting from a simple example, preserving web play, determinism, and replay (flezzle-rs F8) | W4 | `[ ]` |
