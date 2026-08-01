@@ -20,12 +20,17 @@ sudo apt-get install pkg-config libasound2-dev libudev-dev libwayland-dev
 
 git submodule update --init projects/01-sample-platformer/flezzle-rs
 cd projects/01-sample-platformer/flezzle-rs
-git switch -c milestone/01-attempt milestone/01-start
+# The submodule checks out DETACHED at the pinned start commit — branch from
+# right here (no ref name needed):
+git switch -c milestone/01-attempt
 cargo test    # red: this is your starting line
 ```
 
 (The pinned toolchain in `rust-toolchain.toml` installs itself on first cargo
-use. If the submodule pin can't be found, see CONVENTIONS.md → Submodules.)
+use. If the submodule pin can't be found, see CONVENTIONS.md → Submodules.
+Expect the *first* `cargo test` to take a while and eat serious disk: ~700
+crates compile with dependencies at opt-level 3, ~20 GB of `target/`.
+Subsequent runs are seconds.)
 
 ## What's provided vs. what you build
 
@@ -59,15 +64,20 @@ You build (marked `TODO(project-01)`):
 
 ## Suggested checkpoints
 
-1. Wire the resources (step 2 of the lib.rs TODO) →
-   `game_plugin_inserts_core_resources` goes green.
-2. Add the plugins and systems →
+1. Wire the third-party plugins and world resources (steps 1–2 of the
+   lib.rs TODO) → `game_plugin_inserts_core_resources` goes green (it
+   checks configured *values*, including gravity from the physics plugin).
+2. Add this crate's plugins and systems →
    `level_spawns_player_and_walls` goes green. `cargo run` should now show
    the level with a camera fitted to it; the player falls and lands but
    ignores you.
-3. Implement `player_movement` → `player_moves_right_on_input` goes green.
-   `cargo run`: A/D move, Space jumps (only when grounded — try mid-air),
-   W/S climb ladders, R restarts, and you can rob a chest of its pumpkins.
+3. Implement `player_movement` → `player_jumps_and_moves_right` goes green.
+   `cargo run`: A/D move, Space jumps (when grounded or climbing — try
+   mid-air), W/S climb ladders, R restarts, P debug-prints the player's
+   LDtk-authored inventory to the terminal, and you can shove the heavy
+   chest around. Green tests are a **floor**, not a finish line — they don't
+   cover climbing, restart, or left movement, so this manual pass is part of
+   the contract.
 
 ## Concepts to study along the way
 
@@ -86,6 +96,11 @@ You build (marked `TODO(project-01)`):
   headless tests are another; WASM and a fuzzing harness will be more. This
   boundary is flezzle-rs's architectural bet — it's why the tests can run
   the real game at a fixed timestep with injected input.
+- **Forward look (milestone 02):** some patterns you're learning here get
+  deliberately rewritten next milestone for determinism — `std` HashSets,
+  per-frame `Update` gameplay systems vs. the 64 Hz fixed physics clock
+  (the tests pin it to 60 Hz as a stopgap), and unordered system scheduling.
+  Learn the shape now; expect the clockwork to change.
 
 Primary reference: the
 [upstream platformer example](https://github.com/Trouv/bevy_ecs_ldtk/tree/v0.15.0/examples/platformer)
@@ -97,6 +112,9 @@ reinvention — but try each piece yourself first.
 
 - [ ] `cargo test` green (tests unmodified)
 - [ ] Playable per checkpoint 3
-- [ ] Compared against `milestone/01-complete`; divergences noted
+- [ ] Compared against `milestone/01-complete`; divergences noted. That
+      branch lives on the AI fork — from the submodule:
+      `git remote add fork https://github.com/nverhaaren-ai/flezzle-rs.git`,
+      `git fetch fork`, then `git diff fork/milestone/01-complete -- src/`
 - [ ] Feedback recorded (what was unclear, too easy, too hard) → shapes
       Project 02

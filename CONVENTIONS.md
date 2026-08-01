@@ -32,10 +32,13 @@ pair of branches sharing history:
   reference implementation, tests green. **Spoilers live here** — don't look
   until you're done (or want to be done).
 
-Work on your own branch off `milestone/NN-start` (suggested name:
-`milestone/NN-attempt`). When the milestone is finalized (after feedback and
-comparison), the agreed-upon result merges to `main` of flezzle-rs, and the
-workbook project merges to `main` here.
+Work on your own branch (suggested name: `milestone/NN-attempt`). Inside the
+project's submodule, HEAD is already detached at the start commit, so plain
+`git switch -c milestone/NN-attempt` branches from the right place — no ref
+name needed (the `milestone/NN-*` branch names live on the `nverhaaren-ai`
+fork, not in a fresh submodule clone). When the milestone is finalized (after
+feedback and comparison), the agreed-upon result merges to `main` of
+flezzle-rs, and the workbook project merges to `main` here.
 
 **Merging rule (important):** milestone branches must reach `main` via merge
 commit or fast-forward — **never squash** — so the start commit stays
@@ -52,15 +55,20 @@ points at the upstream repo:
 git submodule update --init projects/NN-short-slug/flezzle-rs
 ```
 
-Caveat: while a milestone is still under review, its start commit may exist
-only on the `nverhaaren-ai` fork (not yet merged upstream). If the submodule
-checkout fails with an unknown-revision error, fetch the fork inside the
-submodule:
+While a milestone is under review, its start commit exists only on the
+`nverhaaren-ai` fork branches — but the checkout above still works, because
+GitHub serves fork-network objects by SHA from the upstream URL. Two caveats:
+
+- Don't rely on that for permanence: the pin is only durably safe once the
+  milestone merges upstream (hence the no-squash rule and the tag).
+- To *name* the milestone branches inside a submodule (e.g. to diff against
+  `milestone/NN-complete`), add the fork as a remote:
 
 ```bash
-git -C projects/NN-short-slug/flezzle-rs fetch \
-    https://github.com/nverhaaren-ai/flezzle-rs.git "milestone/NN-start"
-git submodule update projects/NN-short-slug/flezzle-rs
+git -C projects/NN-short-slug/flezzle-rs remote add fork \
+    https://github.com/nverhaaren-ai/flezzle-rs.git
+git -C projects/NN-short-slug/flezzle-rs fetch fork
+# then e.g.: git diff fork/milestone/NN-complete
 ```
 
 ## Checking your work
