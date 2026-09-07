@@ -81,6 +81,13 @@ You build (marked `TODO(project-01)`):
 
 ## Concepts to study along the way
 
+Primers for the three frameworks — what each concept is, where it appears in
+flezzle-rs, and the canonical docs — live in [`reference/`](../../reference/):
+[Bevy](../../reference/bevy-essentials.md) ·
+[bevy_ecs_ldtk](../../reference/bevy-ecs-ldtk-essentials.md) ·
+[Avian](../../reference/avian-essentials.md). The bullets below are the
+subset this project leans on.
+
 - **Bevy fundamentals:** `App`, `Plugin`, systems, queries, resources.
   [Bevy quick start](https://bevy.org/learn/quick-start/introduction/) —
   the ECS chapter is the essential one.

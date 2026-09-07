@@ -40,11 +40,27 @@ fork, not in a fresh submodule clone). When the milestone is finalized (after
 feedback and comparison), the agreed-upon result merges to `main` of
 flezzle-rs, and the workbook project merges to `main` here.
 
-**Merging rule (important):** milestone branches must reach `main` via merge
-commit or fast-forward — **never squash** — so the start commit stays
-reachable from `main`. The submodule pin and this workbook's value depend on
-that history being permanent. After the upstream merge, the start commit is
-tagged `workbook/NN-start` in flezzle-rs.
+### Two ways a start commit comes to exist
+
+1. **Historical** (project 01): flezzle-rs genuinely didn't have the
+   component yet; the start commit is a real point in its history and the
+   complete commit merges forward into `main`.
+2. **Synthetic** (projects after flezzle-rs "scouted" ahead — see
+   `notes/scouting/`): `main` already contains the component, so the start
+   commit is a branch off `main` with the component *cut out* and its tests
+   left red. The complete commit restores it (a no-op diff against `main`),
+   or your version replaces it via a normal PR if it's better.
+
+Either way the workbook reads the same. What differs is the guarantee that
+keeps the pin valid:
+
+**Pins are guaranteed by tags, not by `main`.** When a project is
+finalized, its start commit is tagged `workbook/NN-start` in the upstream
+flezzle-rs repo; tags are the permanent refs submodule pins rely on. For
+historical starts the commit is *also* reachable from `main`, which is why
+those milestone branches must merge with a merge commit or fast-forward —
+**never squash**, which would rewrite the SHA. Synthetic starts only need
+the tag.
 
 ## Submodules
 
@@ -60,7 +76,8 @@ While a milestone is under review, its start commit exists only on the
 GitHub serves fork-network objects by SHA from the upstream URL. Two caveats:
 
 - Don't rely on that for permanence: the pin is only durably safe once the
-  milestone merges upstream (hence the no-squash rule and the tag).
+  `workbook/NN-start` tag exists upstream (and, for historical starts, the
+  milestone has merged without squashing).
 - To *name* the milestone branches inside a submodule (e.g. to diff against
   `milestone/NN-complete`), add the fork as a remote:
 

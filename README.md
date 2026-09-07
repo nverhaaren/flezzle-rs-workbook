@@ -8,6 +8,11 @@ AI-assisted development — and as a study/onboarding path into flezzle-rs.
 
 - **[CONVENTIONS.md](CONVENTIONS.md)** — how projects, branches, submodule
   pins, and solution-checking work.
+- **[reference/](reference/)** — primers on Bevy, bevy_ecs_ldtk, and Avian:
+  concepts, where they appear in flezzle-rs, links to the real docs.
+- **[notes/scouting/](notes/scouting/)** — findings from flezzle-rs work
+  done ahead of the workbook, and what each finding suggests for a future
+  project.
 - **[ROADMAP.md](ROADMAP.md)** — task-dag of planned projects.
 - **[projects/01-sample-platformer/](projects/01-sample-platformer/)** — get
   the platformer running: assemble the game app, implement player movement.
